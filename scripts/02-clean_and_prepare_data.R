@@ -28,7 +28,7 @@ kenya_condom_clean <- kenya_condom %>%
 # Add a new column that denotes the gender
 kenya_condom_age <- kenya_condom_clean %>%
   mutate(gender = ifelse(as.numeric(rownames(kenya_condom_clean))<28,"female","male"))
-kenya_condom_age <- kenya_condom_age[,c(1,11,2:10)]
+kenya_condom_age <- kenya_condom_age[,c(1,12,2:11)]
 # We will filter to only the age rows and rename the var column
 kenya_condom_age <- kenya_condom_age[c(2:6,27,29:34,55),] %>%
   rename(age = var)
@@ -41,7 +41,7 @@ kenya_condom_age <- kenya_condom_age %>%
 # Add a new column that denotes the gender
 kenya_condom_province <- kenya_condom_clean %>%
   mutate(gender = ifelse(as.numeric(rownames(kenya_condom_clean))<28,"female","male"))
-kenya_condom_province <- kenya_condom_province[,c(1,11,2:10)]
+kenya_condom_province <- kenya_condom_province[,c(1,12,2:11)]
 # We will filter to only the province rows and rename the var column
 kenya_condom_province <- kenya_condom_province[c(15:21,27,43:49,55),] %>%
   rename(province = var)
@@ -60,7 +60,8 @@ kenya_condom_province <- kenya_condom_province %>%
 agent <-
   create_agent(tbl = kenya_condom_age) %>%
   col_is_factor(columns = vars(age, gender)) %>%
-  col_is_numeric(columns = vars(public_sector,
+  col_is_numeric(columns = vars(know_about_condoms,
+                                public_sector,
                                 private_medical_sector,
                                 private_pharmacy,
                                 shop,
@@ -73,7 +74,8 @@ agent <-
                   set = c("15-19","20-24","25-29","30-39","40-49","50-54","Total")) %>%
   col_vals_in_set(columns = gender,
                   set = c("male", "female")) %>%
-  col_vals_between(columns = vars(public_sector,
+  col_vals_between(columns = vars(know_about_condoms,
+                                  public_sector,
                                   private_medical_sector,
                                   private_pharmacy,
                                   shop,
@@ -92,7 +94,8 @@ agent
 agent2 <-
   create_agent(tbl = kenya_condom_province) %>%
   col_is_factor(columns = vars(province, gender)) %>%
-  col_is_numeric(columns = vars(public_sector,
+  col_is_numeric(columns = vars(know_about_condoms,
+                                public_sector,
                                 private_medical_sector,
                                 private_pharmacy,
                                 shop,
@@ -106,7 +109,8 @@ agent2 <-
                           "Nyanza","Rift Valley","Western","Total")) %>%
   col_vals_in_set(columns = gender,
                   set = c("male", "female")) %>%
-  col_vals_between(columns = vars(public_sector,
+  col_vals_between(columns = vars(know_about_condoms,
+                                  public_sector,
                                   private_medical_sector,
                                   private_pharmacy,
                                   shop,

@@ -80,6 +80,7 @@ dhs_1998 <-
 dhs_1998 <-
   dhs_1998 %>%
   select(age,
+         know_about_condoms,
          public_sector,
          private_medical_sector,
          private_pharmacy,

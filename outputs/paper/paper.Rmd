@@ -2,9 +2,8 @@
 title: "My title"
 subtitle: "My subtitle if needed"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Tian Yi Zhang
+thanks: "Code and data supporting this paper are available at: AOIWDJAWOIDJ"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
 output:
@@ -14,13 +13,47 @@ bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
+# Load the required packages for this paper
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
-library(palmerpenguins)
 ```
 
 # Introduction
+
+The usage of contraception has become an important part of modern society.
+Various contraceptive methods have been invented throughout the years to aid
+couples in their family planning efforts. These contraceptive methods range from
+hormonal methods and intrauterine methods to barrier methods, providing many
+options for both male and female users. Notably, according to the Centers for
+Disease Control and Prevention, the barrier method known as condom was the most 
+popular male contraceptive used in the United States a few years ago,
+with it being around 8.7% of total contraceptives used [@citeCDC].
+This is also the case in the country of Kenya, with around 1% of the surveyed
+individuals reporting to have used condoms, as denoted in the 1998 DHS
+report [@citeDHS].
+
+Another interesting statistic in the studies mentioned above are the high
+usage rates of female hormonal contraceptives. 12.6% of contraceptive methods
+used in the United States are of the oral hormonal type [@citeCDC], and around
+9% of surveyees in Kenya report using oral contraceptives as well [@citeDHS].
+This statistic is perplexing in that the usage rate of hormonal contraceptives
+are rather high despite the noticeable side effects:
+Various studies have suggested in the past that female contraceptives often
+lead to high-risk side effects. For example, the U.S. Department of Health &
+Human Services notes that oral contraceptives that rely on hormonal controls
+can lead to higher blood pressure and more blood clots [@citeDHH]. As such, one
+would wonder why male contraceptives do not see more wide usage despite a
+relative lack of harmful side effects in comparison to female hormonal
+contraceptives.
+
+This paper attempts to analyze potential reasons for the relative lack of
+condom usage as a contraceptive method in Kenya utilizing statistics presented
+in the 1998 DHS final report on Kenya [@citeDHS]. Specifically, the paper focuses
+on finding a, of lack thereof, relationship between the age, geographical
+location, and the knowledge of condom(TODO)
+
+WRITE SOMETHING ABOUT FINDINGS; WRITE SOMETHING ABOUT THE STURCTURE OF THE PAPER
 
 You can and should cross-reference sections and sub-sections. For instance, Section \@ref(data). R Markdown automatically makes the sections lower case and adds a dash to spaces to generate labels, for instance, Section \@ref(first-discussion-point). 
 
@@ -28,16 +61,53 @@ You can and should cross-reference sections and sub-sections. For instance, Sect
 
 # Data
 
-Our data is of penguins (Figure \@ref(fig:bills)).
+The dataset used in this paper is obtained from the PDF "FR102", titled 
+"Kenya Demographic and Healthy Survey 1998" and published in 1998 by
+the Demographic and Health Surveys Program.^[The PDF can be obtained at
+https://dhsprogram.com/publications/publication-fr102-dhs-final-reports.cfm?csSearch=456440_1.]
+The raw dataset is parsed using the package `pdftools` [@citePDF] from 
+Table 10.14.1 and Table 10.14.2 on page 170 and 171 of the PDF respectively 
+[@citeDHS]. The dataset is then cleaned using the `janitor` package 
+[@citejani] and the `pointblank` [@citePB] package is used to set up validation
+tests for the class and the content of the datasets.
+Subsequent graphs and tables shown in this paper also utilize the
+`tidyverse` [@citetidy] and `knitr` [@citeknitr] packages.
+
+The PDF where the dataset is parsed from is a report compiled by the DHS program
+using the third Demographic and Health Survey conducted in Kenya, the previous
+two of which were conducted in 1989 and 1993. [@citeDHS]. According to the
+information provided on the DHS Program website, Standard DHS Surveys are
+described as surveys with a sample size that consists of 5000 to 30000
+households conducted on a five year cycle [@citeDHS2].
+Since there is around a five year gap between each consecutive Kenya DHS
+survey, we can safely assume that the PDF report containing the raw data is
+a standard DHS survey.
+
+The survey used by the DHS Program was distributed in nearly all districts in
+Kenya. While the total population of the districts not included in the survey
+only amounts to less than four percent of the country's population, it is still
+a substantial percentage of the national population that was not sampled from.
+The PDF specified that stratified sampling was used, which greatly
+contributes greatly to the increase in precision
+of the findings from the survey and generally leads to a sample that better
+represents the population than a simple random sampling.
+However, it was unclear to the readers what
+characteristics or attributes were used to divide the population into strata.
+Since it was stated later in the PDF that the survey wished to obtain
+"district-level data for planning purposed" [@citeDHS], it should be safe to
+assume that the strata were constructed based on geographical locations.
+
+The surveys questions were originally constructed fully in English before being
+translated into various local languages, and the wording of the questions
+were revised several times by local pretest teams before being sent out, 
+ensuring that there will not be any inaccuracies or awkward wording present due
+to the language barrier.
+[@citeDHS]. This is especially important due to the sensitive nature of the
+topics asked in the surveys, and helps in making sure that as many
+participants answer honestly as possible.
 
 ```{r bills, fig.cap="Bills of penguins", echo = FALSE}
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = FALSE) +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+
 ```
 
 Talk more about it.
@@ -46,14 +116,6 @@ Also bills and their average (Figure \@ref(fig:billssssss)). (Notice how you can
 
 ```{r billssssss, fig.cap="More bills of penguins", echo = FALSE, fig.width=8, fig.height=4}
 
-# This needs to be about the random data tha tI sasmpled?
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = FALSE) +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
 ```
 
 Talk way more about it. 
