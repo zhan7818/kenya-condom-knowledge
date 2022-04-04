@@ -1,5 +1,5 @@
 ---
-title: "My title"
+title: "Women in Kenya Severely Lack Knowledge on Source of Condom Supply Across All Age Groups And Provinces"
 subtitle: "My subtitle if needed"
 author: 
   - Tian Yi Zhang
@@ -57,7 +57,19 @@ location, and the knowledge of condom(TODO)
 
 WRITE SOMETHING ABOUT FINDINGS; WRITE SOMETHING ABOUT THE STURCTURE OF THE PAPER
 
-You can and should cross-reference sections and sub-sections. For instance, Section \@ref(data). R Markdown automatically makes the sections lower case and adds a dash to spaces to generate labels, for instance, Section \@ref(first-discussion-point). 
+This paper attempts to analyze potential reasons for the relative lack of
+condom usage as a contraceptive method in Kenya utilizing statistics presented
+in the 1998 DHS final report on Kenya [@citeDHS]. Specifically, the paper focuses
+on finding a, of lack thereof, relationship between the age, geographical
+location, and the knowledge of condom(TODO)
+
+The remainder of this paper contains analysis on the dataset and the resulting
+findings. Section \@ref(data) details the data analysis of this paper. Section
+\@ref(raw-data-origin-and-dhs-methodology) discusses the origin of the raw
+data used in this paper, and \@ref(dataset-parsing-and-cleaning) details
+the extraction process for the dataset. Section \@ref(results) details the
+findings from the data analysis, and all limitations and potential extensions
+are discussed in Section \@ref(discussion).
 
 
 
@@ -319,6 +331,12 @@ level of ignorance regarding ways to obtain condoms.
 \newpage
 
 # Results
+
+The graphs in the Data section have demonstrated that a significantly higher
+percentage of women in Kenya have no knowledge on a source to obtain condoms;
+the difference in percentage ranges from 28.8% to 12.2% depending on the
+age group, and on average, the difference in percentage of women and men
+who have no konwledge on a source to obtain condoms is 15.1%.
 
 ## Population density and knowledge on condoms
 
