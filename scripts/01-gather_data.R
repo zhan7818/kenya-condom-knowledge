@@ -6,12 +6,8 @@
 # License: MIT
 
 #### Workspace setup ####
-library(haven)
-library(janitor)
 library(pdftools)
-library(purrr)
 library(tidyverse)
-library(stringi)
 
 #### Parse the PDF ####
 # The PDF used in this work is obtained from the Kenya DHS Final Report in 1998

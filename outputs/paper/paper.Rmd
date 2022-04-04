@@ -1,11 +1,10 @@
 ---
 title: "Women in Kenya Severely Lack Knowledge on Source of Condom Supply Across All Age Groups And Provinces"
-subtitle: "My subtitle if needed"
 author: 
   - Tian Yi Zhang
-thanks: "Code and data supporting this paper are available at: AOIWDJAWOIDJ"
+thanks: "Code and data supporting this paper are available at: https://github.com/zhan7818/kenya-condom-knowledge"
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "The use of contraception is a vital part of modern family planning, yet high risk hormonal contraceptives are curiously more widely used than male contraceptives such as condoms. We obtain data from the 1998 DHS Program report regarding the primary sources for women and men of Kenya to obtain condoms and analyze it using several graphs and tables. The data shows a consistent trend for percentage of women who do not know a source of condom supply to be much higher than men in Kenya regardless of age groups and geographical locations, though higher education levels correlates to increased knowledge in sources for condom supply. Findings suggest an increase in condom advertisement targeted towards women across all age groups and provinces, and an increase in condom advertisement from governement-run healthy services targeted towards poorly educated citizens."
 output:
   bookdown::pdf_document2
 toc: FALSE
@@ -47,31 +46,29 @@ Human Services notes that oral contraceptives that rely on hormonal controls
 can lead to higher blood pressure and more blood clots [@citeDHH]. As such, one
 would wonder why male contraceptives do not see more wide usage despite a
 relative lack of harmful side effects in comparison to female hormonal
-contraceptives.
+contraceptives. A possible hypothesis is that due to it being a contraceptive
+meant to be used by men, it is less advertised to women.
 
 This paper attempts to analyze potential reasons for the relative lack of
 condom usage as a contraceptive method in Kenya utilizing statistics presented
 in the 1998 DHS final report on Kenya [@citeDHS]. Specifically, the paper focuses
 on finding a, of lack thereof, relationship between the age, geographical
-location, and the knowledge of condom(TODO)
-
-WRITE SOMETHING ABOUT FINDINGS; WRITE SOMETHING ABOUT THE STURCTURE OF THE PAPER
-
-This paper attempts to analyze potential reasons for the relative lack of
-condom usage as a contraceptive method in Kenya utilizing statistics presented
-in the 1998 DHS final report on Kenya [@citeDHS]. Specifically, the paper focuses
-on finding a, of lack thereof, relationship between the age, geographical
-location, and the knowledge of condom(TODO)
+location, and the knowledge of sources for obtaining condoms.
 
 The remainder of this paper contains analysis on the dataset and the resulting
 findings. Section \@ref(data) details the data analysis of this paper. Section
 \@ref(raw-data-origin-and-dhs-methodology) discusses the origin of the raw
 data used in this paper, and \@ref(dataset-parsing-and-cleaning) details
-the extraction process for the dataset. Section \@ref(results) details the
-findings from the data analysis, and all limitations and potential extensions
+the extraction process for the dataset. 
+Subsequent graphs and tables shown in this paper utilize the
+statistical programming language R [@citeR] and the
+`tidyverse` [@citetidy], `ggplot2` [@citeggplot2] and `knitr` 
+[@citeknitr] packages. 
+Section \@ref(results) details the
+results from the data analysis, which includes findings on Kenyan women's 
+generally higher lack of knowledge of a viable source for obtaining condoms 
+compared to men. All limitations and potential extensions
 are discussed in Section \@ref(discussion).
-
-
 
 # Data
 
@@ -141,11 +138,9 @@ contained data for certain age groups while other rows contained data for
 different marital statuses. To simplify the analysis process, only the rows 
 pertaining to age groups, education, and provinces were parsed from the PDF.
 
-The dataset is then cleaned using the `janitor` package 
-[@citejani] and the `pointblank` [@citePB] package is used to set up validation
-tests for the class and the content of the datasets.
-Subsequent graphs and tables shown in this paper also utilize the
-`tidyverse` [@citetidy] and `knitr` [@citeknitr] packages.
+The dataset is then cleaned using the `janitor` [@citejani] and `dplyr` 
+[@citedplyr] package. The `pointblank` [@citePB] package is used to set 
+up validation tests for the class and the content of the datasets.
 
 The final datasets---clean_data_age.csv, cleaned_data_province.csv
 and cleaned_data_education.csv---showcased
@@ -381,14 +376,30 @@ for condoms are 15.1% higher than men.
 
 As demonstrated in Figure \@ref(fig:graph3), a staggeringly high percentage
 of women and men with no education have no knowledge on where to obtain
-condoms.
+condoms. 
 The graph also shows that receiving a higher level of
-education leads to an overall decrease in condom source ignorance in
+education correlates to an overall decrease in lack of knowledge on sources for
+condom supply in
 both genders. However, the difference in condom source ignorance between
 women and men seem to not be correlated to education level, as the difference
 in condom source ignorance between genders is lower in both the 'No Education'
 and 'Secondary+' levels compared to the 'Primary Incomplete' and
 'Primary Complete' levels.
+
+```{r graph4, fig.cap="Percentage of Surveyees Citing Public Sector as Primary Source for Condom versus Education Level", echo = FALSE, fig.width=8, fig.height=4}
+kenya_condom_education %>%
+  ggplot(aes(x = education, y = public_sector, color = gender)) +
+  geom_point(size = 4) +
+  theme_minimal() +
+  labs(y = "Cited Public Sector as Primary Source (%)",
+       x = "Education")
+```
+
+Another important thing to note is shown in Figure \@ref(fig:graph4), as a larger
+percentage of both men and women in Kenya cite government-funded public services
+as their primary source of condom supply as their education levels increase.
+This suggests that an increase in public sector advertisement campaign targeted
+towards poorly educated citizens could increase usage rate of condoms.
 
 # Discussion
 
@@ -424,7 +435,20 @@ Across all the tables and graphs presented in this paper, it is apparent that
 on average, a significantly higher percentage of women have no knowledge
 sources for condoms. It is unclear as to why this disparity exists. One possible
 reasoning is that condom is a male-contraceptive and thus less advertised to
-women.
+women. This suggests that creating more condom advertisements targeted at women
+in Kenya could potentially lead to an increase in condom usage as contraceptive
+method.
+
+## Higher level of education leads to less ignorance on sources of condom supply
+
+Figure \@ref(fig:graph3) shows that higher levels of education seemingly
+correlates with a sharp decrease in ignorance of sources of condom supply.
+While it may be difficult to increase the country's educational findings and
+quality on a national scale, it could be beneficial to set up clinics or
+government-sponsored services that inform the less educated population about
+sources of condom supply, especially given what is presented in
+Figure \@ref(fig:graph4).
+
 
 ## Limitations
 
