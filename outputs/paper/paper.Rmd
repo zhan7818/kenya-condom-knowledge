@@ -499,12 +499,158 @@ scope of this paper alone.
 
 # Appendix {-}
 
+## Datasheet for the Dataset
 
-# Additional details
+Extract of the questions from @gebru2021datasheets
 
+**Motivation**
+
+1. *For what purpose was the dataset created? Was there a specific task in mind? Was there a specific gap that needed to be filled? Please provide a description.*
+    - The dataset was created to enable analysis of condom usage for men and women in Kenya. The raw data used to create this dataset was presented in a PDF format obtained from the 1998 DHS Program report on Kenya [@citeDHS] and thus parsing was required to convert the raw data into a usable format. The original purpose of the raw data was to help inform local policy makers on the subject of family planning and the use of contraception.
+2. *Who created the dataset (for example, which team, research group) and on behalf of which entity (for example, company, institution, organization)?*
+    - The raw data used for the dataset was created by the Demographic and Health Surveys Program, a program supported by the American organization USAID. The parsed dataset was created by Tian Yi Zhang, a student at the University of Toronto.
+3. *Who funded the creation of the dataset? If there is an associated grant, please provide the name of the grantor and the grant name and number.*
+    - The raw data used for th dataset was funded by the American organizatino USAID.
+4. *Any other comments?*
+    - None.
+
+**Composition**
+
+1. *What do the instances that comprise the dataset represent (for example, documents, photos, people, countries)? Are there multiple types of instances (for example, movies, users, and ratings; people and interactions between them; nodes and edges)? Please provide a description.*
+	- The instances are respondents to a survey constructed by the DHS Program in 1998 which was distributed to a sample of the citizens from age 15-54 in Kenya.
+2. *How many instances are there in total (of each type, if appropriate)?*
+	- There are 6581 female respondents and 2962 male respondents.
+3. *Does the dataset contain all possible instances or is it a sample (not necessarily random) of instances from a larger set? If the dataset is a sample, then what is the larger set? Is the sample representative of the larger set (for example, geographic coverage)? If so, please describe how this representativeness was validated/verified. If it is not representative of the larger set, please describe why not (for example, to cover a more diverse range of instances, because instances were withheld or unavailable).*
+	- The dataset is a sample of instances. It is intended to be a stratified sample of the entire population of Kenya,
+	presumed stratified based on the geographical location (i.e. county) of the respondents. Estimates of instances were
+	used for the rural areas in the following 15 districts: Bungoma, Kakamega, Kericho, Kilifi, Kisii, Machakos, Meru, Murang'a, Nakuru, Nandi, Nyeri, Siaya, South Nyanza, Taita-Taveta, Uasin Gishu, Nairobi, and Mombasa. According to @citeDHS, estimates were partially utilized because the districts were considered large in their respective provinces and had been surveyed in the two Kenya DHS reports prior to this one.
+4. *What data does each instance consist of? "Raw" data (for example, unprocessed text or images) or features? In either case, please provide a description.*
+	-  The first column in each dataset denotes the feature by which the data is being categorized. The gender variable denotes the gender of the respondent, the know_about_condoms variable denotes the percentage of respondents that know about condoms. The rest of the variables, aside from number_of_people, denote the percentage of respondents that cited each variable as their primary source of condom supply.
+5. *Is there a label or target associated with each instance? If so, please provide a description.*
+	- the gender is either male or female, the other variables are percentage-based.
+6. *Is any information missing from individual instances? If so, please provide a description, explaining why this information is missing (for example, because it was unavailable). This does not include intentionally removed information, but might include, for example, redacted text.*
+	- there are no data for the female age group of 50-54 in the raw data used for the dataset. An explanation was unable to be found in the Kenya DHS report.
+7. *Are relationships between individual instances made explicit (for example, users' movie ratings, social network links)? If so, please describe how these relationships are made explicit.*
+	- The variables that denote the percentage of respondents that cite said variables as their primary source of condom supply (or, does not know a source of condom supply) adds up to 100%.
+8. *Are there recommended data splits (for example, training, development/validation, testing)? If so, please provide a description of these splits, explaining the rationale behind them.*
+	- None.
+9. *Are there any errors, sources of noise, or redundancies in the dataset? If so, please provide a description.*
+	- The sample size is unequal for female and male respondents despite the ratio of men to women in Kenya being 98.6 to 100, according to Faria [@citeStati]. There is no explanation provided in the Kenya DHS report, but this unequal sample size does negatively affect the assumption of equal variances.
+10. *Is the dataset self-contained, or does it link to or otherwise rely on external resources (for example, websites, tweets, other datasets)? If it links to or relies on external resources, a) are there guarantees that they will exist, and remain constant, over time; b) are there official archival versions of the complete dataset (that is, including the external resources as they existed at the time the dataset was created); c) are there any restrictions (for example, licenses, fees) associated with any of the external resources that might apply to a dataset consumer? Please provide descriptions of all external resources and any restrictions associated with them, as well as links or other access points, as appropriate.*
+	- As mentioned before, the datasets are parsed from Table 10.14.1 and Table 10.14.2 on page 170 and 171 of the Kenya DHS report PDF. [@citeDHS]
+11. *Does the dataset contain data that might be considered confidential (for example, data that is protected by legal privilege or by doctor-patient confidentiality, data that includes the content of individuals' non-public communications)? If so, please provide a description.*
+	- Unknown to the authors of the datasheet. However, seeing that the Kenya DHS report PDF is publicly available for download on the DHS Program's official website, one could safely assume that no confidential data is included.
+12. *Does the dataset contain data that, if viewed directly, might be offensive, insulting, threatening, or might otherwise cause anxiety? If so, please describe why.*
+	- The dataset does not contain any offensive or insulting data.
+13. *Does the dataset identify any sub-populations (for example, by age, gender)? If so, please describe how these subpopulations are identified and provide a description of their respective distributions within the dataset.*
+	- The datasets are split by age, gender, education level, and provinces. These splits are provided by the raw data obtained from the Kenya DHS report.
+14. *Is it possible to identify individuals (that is, one or more natural persons), either directly or indirectly (that is, in combination with other data) from the dataset? If so, please describe how.*
+	- It is entirely impossible to identify individuals from the dataset as the individual questionnaires submitted by each respondent are present in neither the original Kenya DHS Program or the converted datasets.
+15. *Does the dataset contain data that might be considered sensitive in any way (for example, data that reveals race or ethnic origins, sexual orientations, religious beliefs, political opinions or union memberships, or locations; financial or health data; biometric or genetic data; forms of government identification, such as social security numbers; criminal history)? If so, please provide a description.*
+	- The datasets do not contain data that might be considered sensitive in any way.
+16. *Any other comments?*
+	- None.
+
+**Collection process**
+
+1. *How was the data associated with each instance acquired? Was the data directly observable (for example, raw text, movie ratings), reported by subjects (for example, survey responses), or indirectly inferred/derived from other data (for example, part-of-speech tags, model-based guesses for age or language)? If the data was reported by subjects or indirectly inferred/derived from other data, was the data validated/verified? If so, please describe how.*
+	- The data was collected through a questionnaire distributed to the respondents by the Kenya DHS program.
+2. *What mechanisms or procedures were used to collect the data (for example, hardware apparatuses or sensors, manual human curation, software programs, software APIs)? How were these mechanisms or procedures validated?*
+	- As mentioned previously, a questionnaire was created and distributed. Any programs used to record the information obtained from the said questionnaire are entirely unknown to the author of the datasheet.
+3. *If the dataset is a sample from a larger set, what was the sampling strategy (for example, deterministic, probabilistic with specific sampling probabilities)?*
+	- According to the Kenya DHS report [@citeDHS], stratified sampling was used, though the specific characteristic by which the strata were constructed are not mentioned in the original report.
+4. *Who was involved in the data collection process (for example, students, crowdworkers, contractors) and how were they compensated (for example, how much were crowdworkers paid)?*
+	- Unknown to the author of the datasheet.
+5. *Over what timeframe was the data collected? Does this timeframe match the creation timeframe of the data associated with the instances (for example, recent crawl of old news articles)? If not, please describe the timeframe in which the data associated with the instances was created.*
+	- Unknown to the author of the datasheet.
+6. *Were any ethical review processes conducted (for example, by an institutional review board)? If so, please provide a description of these review processes, including the outcomes, as well as a link or other access point to any supporting documentation.*
+	- Unknown to the author of the datasheet.
+7. *Did you collect the data from the individuals in question directly, or obtain it via third parties or other sources (for example, websites)?*
+	- The raw data was collected by the Kenya DHS Program through a questionnaire, the methods through which the data is recorded by them is entirely unknown to the author of the datasheet.
+8. *Were the individuals in question notified about the data collection? If so, please describe (or show with screenshots or other information) how notice was provided, and provide a link or other access point to, or otherwise reproduce, the exact language of the notification itself.*
+	- Unknown to the author of the datasheet.
+9. *Did the individuals in question consent to the collection and use of their data? If so, please describe (or show with screenshots or other information) how consent was requested and provided, and provide a link or other access point to, or otherwise reproduce, the exact language to which the individuals consented.*
+	- Unknown to the author of the datasheet.
+10. *If consent was obtained, were the consenting individuals provided with a mechanism to revoke their consent in the future or for certain uses? If so, please provide a description, as well as a link or other access point to the mechanism (if appropriate).*
+	- N/A.
+11. *Has an analysis of the potential impact of the dataset and its use on data subjects (for example, a data protection impact analysis) been conducted? If so, please provide a description of this analysis, including the outcomes, as well as a link or other access point to any supporting documentation.*
+	- Unknown to the author of the datasheet.
+12. *Any other comments?*
+	- None.
+
+**Preprocessing/cleaning/labeling**
+
+1. *Was any preprocessing/cleaning/labeling of the data done (for example, discretization or bucketing, tokenization, part-of-speech tagging, SIFT feature extraction, removal of instances, processing of missing values)? If so, please provide a description. If not, you may skip the remaining questions in this section.*
+	- Instances in the data regarding area of residence (rural vs. urban) and marital status (never married, formerly married, currently married) were removed in the final datasets.
+	- Any preprocessing of raw data in the Kenya DHS Program are entirely unknown to the author of the datasheet.
+2. *Was the "raw" data saved in addition to the preprocessed/cleaned/labeled data (for example, to support unanticipated future uses)? If so, please provide a link or other access point to the "raw" data.*
+	- The removed instances in the datasets are not saved.
+	- Any preprocessing of raw data in the Kenya DHS Program are entirely unknown to the author of the datasheet.
+3. *Is the software that was used to preprocess/clean/label the data available? If so, please provide a link or other access point.*
+	- statistical programming language R [@citeR] was used to preprocess the datasets.
+	- Any softwares used to preprocess the raw data in the Kenya DHS Program are entirely unknown to the author of the datasheet.
+4. *Any other comments?*
+	- None.
+
+**Uses**
+
+1. *Has the dataset been used for any tasks already? If so, please provide a description.*
+	- At the time of writing this, only this paper has used the converted datasets
+	- Any other conversion and subsequent usage of the original raw data from the Kenya DHS Program are entirely unknown to the author of this datasheet.
+2. *Is there a repository that links to any or all papers or systems that use the dataset? If so, please provide a link or other access point.*
+	- The repository for this paper, which uses the datasets, are available at https://github.com/zhan7818/kenya-condom-knowledge
+	- Any other repositories for other conversions and subsequent usage of the original raw data from the Kenya DHS Program are entirely unknown to the author of this datasheet. 
+3. *What (other) tasks could the dataset be used for?*
+	- The datasets could be used to modeling or finding relationship between various primary sources of condom supply.
+4. *Is there anything about the composition of the dataset or the way it was collected and preprocessed/cleaned/labeled that might impact future uses? For example, is there anything that a dataset consumer might need to know to avoid uses that could result in unfair treatment of individuals or groups (for example, stereotyping, quality of service issues) or other risks or harms (for example, legal risks, financial harms)? If so, please provide a description. Is there anything a dataset consumer could do to mitigate these risks or harms?*
+	- There is a minuscule risk for harm: The original data presented by Kenya DHS Program was already publicly available for download and contained minimal sensitive information, thus making the converted datasets safe for future uses.
+5. *Are there tasks for which the dataset should not be used? If so, please provide a description.*
+	- The datasets should not be used in an effort to discriminate against individuals in Kenya.
+6. *Any other comments?*
+	- None.
+
+**Distribution**
+
+1. *Will the dataset be distributed to third parties outside of the entity (for example, company, institution, organization) on behalf of which the dataset was created? If so, please provide a description.*
+	- Since there datasets are publicly available on the internet, yes.
+	- The original raw data presented in the Kenya DHS report are also publicly available for download on the internet.
+2. *How will the dataset be distributed (for example, tarball on website, API, GitHub)? Does the dataset have a digital object identifier (DOI)?*
+	- The datasets are distributed on Tian Yi Zhang's github page, along with this paper: https://github.com/zhan7818/kenya-condom-knowledge.
+	- The original raw data presented by Kenya DHS Program is available at https://dhsprogram.com/publications/publication-fr102-dhs-final-reports.cfm?csSearch=456440_1
+3. *When will the dataset be distributed?*
+  - The datasets used in this paper are distributed in 2022.
+	- The original raw data presented by Kenya DHS Program was published in 1998.
+4. *Will the dataset be distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)? If so, please describe this license and/ or ToU, and provide a link or other access point to, or otherwise reproduce, any relevant licensing terms or ToU, as well as any fees associated with these restrictions.*
+	- The datasets are distributed under a MIT license.
+5. *Have any third parties imposed IP-based or other restrictions on the data associated with the instances? If so, please describe these restrictions, and provide a link or other access point to, or otherwise reproduce, any relevant licensing terms, as well as any fees associated with these restrictions.*
+	- No restrictions are placed on the datasets converted in this paper.
+	- Third party restrictions placed on the original raw data presented in the Kenya DHS report are entirely unknown to the author of the datasheet.
+6. *Do any export controls or other regulatory restrictions apply to the dataset or to individual instances? If so, please describe these restrictions, and provide a link or other access point to, or otherwise reproduce, any supporting documentation.*
+	- Unknown to the author of the datasheet.
+7. *Any other comments?*
+	- None.
+
+**Maintenance**
+
+1. *Who will be supporting/hosting/maintaining the dataset?*
+	- Tian Yi Zhang is hosting the converted datasets
+	- The original raw data presented in the Kenya DHS report is being hosted by the DHS Program on their official website.
+2. *How can the owner/curator/manager of the dataset be contacted (for example, email address)?*
+	- The creator of the datasets, Tian Yi Zhang, can be contacted at tianyi.zhang6546@gmail.com.
+3. *Is there an erratum? If so, please provide a link or other access point.*
+	- As of writing this datasheet, no explicit erratum have been spotted.
+4. *Will the dataset be updated (for example, to correct labeling errors, add new instances, delete instances)? If so, please describe how often, by whom, and how updates will be communicated to dataset consumers (for example, mailing list, GitHub)?*
+	- Any updates will be posted on the github page used to host this paper which include the datasets.
+5. *If the dataset relates to people, are there applicable limits on the retention of the data associated with the instances (for example, were the individuals in question told that their data would be retained for a fixed period of time and then deleted)? If so, please describe these limits and explain how they will be enforced.*
+	- N/A.
+6. *Will older versions of the dataset continue to be supported/hosted/maintained? If so, please describe how. If not, please describe how its obsolescence will be communicated to dataset consumers.*
+	- Older versions of the datasets (if there will be any) will be kept as a record on github.
+7. *If others want to extend/augment/build on/contribute to the dataset, is there a mechanism for them to do so? If so, please provide a description. Will these contributions be validated/verified? If so, please describe how. If not, why not? Is there a process for communicating/distributing these contributions to dataset consumers? If so, please provide a description.*
+	- One should contact the Kenya DHS program responsible for collecting and presenting the raw data used to convert the datasets in this case.
+8. *Any other comments?*
+	- None.
 
 \newpage
-
 
 # References
 
