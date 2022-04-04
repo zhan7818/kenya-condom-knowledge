@@ -17,6 +17,8 @@ bibliography: references.bib
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(knitr) # for kable()
+library(ggplot2) # for graphs
 ```
 
 # Introduction
@@ -61,17 +63,12 @@ You can and should cross-reference sections and sub-sections. For instance, Sect
 
 # Data
 
+## Raw Data Origin and DHS Methodology
+
 The dataset used in this paper is obtained from the PDF "FR102", titled 
 "Kenya Demographic and Healthy Survey 1998" and published in 1998 by
 the Demographic and Health Surveys Program.^[The PDF can be obtained at
 https://dhsprogram.com/publications/publication-fr102-dhs-final-reports.cfm?csSearch=456440_1.]
-The raw dataset is parsed using the package `pdftools` [@citePDF] from 
-Table 10.14.1 and Table 10.14.2 on page 170 and 171 of the PDF respectively 
-[@citeDHS]. The dataset is then cleaned using the `janitor` package 
-[@citejani] and the `pointblank` [@citePB] package is used to set up validation
-tests for the class and the content of the datasets.
-Subsequent graphs and tables shown in this paper also utilize the
-`tidyverse` [@citetidy] and `knitr` [@citeknitr] packages.
 
 The PDF where the dataset is parsed from is a report compiled by the DHS program
 using the third Demographic and Health Survey conducted in Kenya, the previous
@@ -96,6 +93,17 @@ characteristics or attributes were used to divide the population into strata.
 Since it was stated later in the PDF that the survey wished to obtain
 "district-level data for planning purposed" [@citeDHS], it should be safe to
 assume that the strata were constructed based on geographical locations.
+It is also worth noting that the survey included men from age 15 to 54 while
+only including women from age 15 to 49. A sufficient justification was not
+found for this discrepancy and it may have an impact on the accuracy of the
+findings.
+
+According to the DHS report [@citeDHS], the survey questions can be divided
+into 14 categories. Of those 14, the following subset of topic is related
+to the focus of this paper:
+
+* Background characteristics such as age and education
+* Knowledge and use of family planning methods.
 
 The surveys questions were originally constructed fully in English before being
 translated into various local languages, and the wording of the questions
@@ -106,50 +114,342 @@ to the language barrier.
 topics asked in the surveys, and helps in making sure that as many
 participants answer honestly as possible.
 
-```{r bills, fig.cap="Bills of penguins", echo = FALSE}
+## Dataset Parsing and Cleaning
 
+The raw dataset is parsed using the package `pdftools` [@citePDF]
+and the statistical programming language R [@citeR] from 
+Table 10.14.1 and Table 10.14.2 on page 170 and 171 of the PDF respectively 
+[@citeDHS]. Two tables are parsed instead of one because the tables each present
+data on only one gender. Therefore a dataset that combines data from both
+genders in order to provide a more accurate analysis. As such,
+a new variable, `gender`, is constructed to help distinguish the data between
+female and male participants. Additionally, there is an issue in that the rows
+of the tables corresponded to different variables; for example, some rows 
+contained data for certain age groups while other rows contained data for 
+different marital statuses. To simplify the analysis process, only the rows 
+pertaining to age groups, education, and provinces were parsed from the PDF.
+
+The dataset is then cleaned using the `janitor` package 
+[@citejani] and the `pointblank` [@citePB] package is used to set up validation
+tests for the class and the content of the datasets.
+Subsequent graphs and tables shown in this paper also utilize the
+`tidyverse` [@citetidy] and `knitr` [@citeknitr] packages.
+
+The final datasets---clean_data_age.csv, cleaned_data_province.csv
+and cleaned_data_education.csv---showcased
+in Table \@ref(tab:showcase1), Table \@ref(tab:showcase2) and 
+Table \@ref(tab:showcase3) respectively,
+contains the information about the same variables in every column except the 
+first, which is the column that denotes either the age, province or education. 
+The purpose of the other columns are explained in the DHS report [@citeDHS],
+summarized as follows:
+
+* gender: male or female
+* know_about_condoms: percentage of participants that know about condoms
+* public_sector: percentage of participants that cited government-run health
+services as their primary source for obtaining condoms
+* private_medical_sector: percentage of participants that cited private medical
+sources as their primary way for obtaining condoms
+* private_pharmacy: percentage of participants that cited private pharmacies as
+their primary source for obtaining condoms
+* shop: percentage of participants that cited commercial shops as their primary
+source for obtaining condoms
+* cbd_agent: percentage of participants that cited community-based distribution
+agents as their primary source for obtaining condoms
+* friends_and_relatives: percentage of participants that cited their friends and
+relatives as their primary source for obtaining condoms
+* other_sources: percentage of participants that cited other sources as their
+primary way for obtaining condoms
+* dont_know_a_source: percentage of participants that do not know a source for
+obtaining condoms
+* number_of_people: number of participants that belong in each category
+
+## Preliminary Analysis
+
+Table \@ref(tab:showcase1) shows that an overwhelming majority of surveyees
+know about condoms, with all percentages well over 90%. For women, the 
+percentage of surveyees that know about condoms are relatively lower in age
+groups 15-19 and 40-49, though there is not a similar trend for men, as more
+than 97% of men know about condoms in all age groups surveyed. This difference
+could be due to the fact that condom is a male-contraceptive and is thus less
+advertised to women. Similarly, Table \@ref(tab:showcase1) shows that a larger
+percentage of men know about condoms than women in every single province
+survyed, though this difference is minuscule.
+
+```{r showcase1, echo=FALSE, warning=FALSE, message=FALSE}
+# Read in the dataset
+kenya_condom_age <-
+  read_csv(here::here("outputs/data/cleaned_data_age.csv"))
+
+# Create a table that showcases the age dataset
+kenya_condom_age |> 
+  select(age, gender, know_about_condoms ,public_sector, 
+         private_medical_sector) |>
+  kable(
+    caption = "First 5 columns on percentage of participants, categorized by
+    age groups, that know about 
+    and/or cite a specific source for condoms, or do not know about condoms",
+    col.names = c("Age","Gender","Know About Condoms","Public Sector",
+                  "Private Medical Sector"),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = ""
+  )
 ```
 
-Talk more about it.
+```{r showcase2, echo=FALSE, warning=FALSE, message=FALSE}
+# Read in the dataset
+kenya_condom_province <-
+  read_csv(here::here("outputs/data/cleaned_data_province.csv"))
 
-Also bills and their average (Figure \@ref(fig:billssssss)). (Notice how you can change the height and width so they don't take the whole page?)
-
-```{r billssssss, fig.cap="More bills of penguins", echo = FALSE, fig.width=8, fig.height=4}
-
+# Create a table that showcases the province dataset
+kenya_condom_province |> 
+  select(province, gender, know_about_condoms ,public_sector, 
+         private_medical_sector) |>
+  kable(
+    caption = "First 5 columns on percentage of participants, categorized by 
+    provinces, that know about 
+    and/or cite a specific source for condoms, or do not know about condoms",
+    col.names = c("Province","Gender","Know About Condoms","Public Sector",
+                  "Private Medical Sector"),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = ""
+  )
 ```
 
-Talk way more about it. 
+```{r showcase3, echo=FALSE, warning=FALSE, message=FALSE}
+# Read in the dataset
+kenya_condom_education <-
+  read_csv(here::here("outputs/data/cleaned_data_education.csv"))
 
+# Create a table that showcases the education dataset
+kenya_condom_education |> 
+  select(education, gender, know_about_condoms, public_sector, 
+         private_medical_sector) |>
+  kable(
+    caption = "First 5 columns on percentage of participants, categorized by 
+    education level, that know about 
+    and/or cite a specific source for condoms, or do not know about condoms",
+    col.names = c("Education","Gender","Know About Condoms","Public Sector",
+                  "Private Medical Sector"),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = ""
+  )
+```
 
+The datasets also show that there are more than twice the number of female 
+participants than male participants. Note that according to Faria [@citeStati],
+the gender ratio in Kenya in 2000 is about 98.6 males per 100 females, meaning
+that there is no significant numerical difference between genders in Kenya.
+Therefore, the unequal sample size in the dataset could lead to unequal
+variances between the male and female samples and would negatively affect the
+results of any tests that require the assumption of equal variances.
 
-# Model
+\newpage
 
-\begin{equation}
-Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
-\end{equation}
+## Knowledge of a source for condom: Age Groups
 
-Equation \@ref(eq:bayes) seems useful, eh?
+```{r graph, fig.cap="Percentage of Surveyee Without Knowledge of A Source for Condom versus Age Groups", echo = FALSE, fig.width=8, fig.height=4}
+kenya_condom_age %>%
+  ggplot(aes(x = age, y = dont_know_a_source, color = gender)) +
+  geom_point(size = 4) +
+  theme_minimal() +
+  labs(y = "Don't know a source for condom (%)",
+       x = "Age Group")
+```
 
-Here's a dumb example of how to use some references: In paper we run our analysis in `R` [@citeR]. We also use the `tidyverse` which was written by @thereferencecanbewhatever If we were interested in baseball data then @citeLahman could be useful. 
+We can observe from Figure \@ref(fig:graph) that there is a substantially higher
+percentage of women who possess no knowledge of ways to obtain condoms
+In all age groups, there are on average twice as many women who do not know 
+a source to obtain condoms compared to men. This difference is much more
+drastic in the younger population (age 15-19).
 
-We can use maths by including latex between dollar signs, for instance $\theta$.
+Note that the female age group of 50-54 was not included in the sample, thus
+leaving no way for us to compare the difference in percentage for that specific
+age group.
 
+## Knowledge of a source for condom: Geographical Location
+
+```{r graph2, fig.cap="Percentage of Surveyee Without Knowledge of A Source for Condom versus Provinces", echo = FALSE, fig.width=8, fig.height=4}
+kenya_condom_province %>%
+  ggplot(aes(x = province, y = dont_know_a_source, color = gender)) +
+  geom_point(size = 4) +
+  theme_minimal() +
+  labs(y = "Don't know a source for condom (%)",
+       x = "Province")
+```
+
+Figure \@ref(fig:graph2) plots the percentage of male and female
+surveyees without knowledge on a source for condoms in each province 
+surveyed and in total.
+
+Similar to the trend shown in Figure \@ref(fig:graph), the difference in
+percentage between female and male participants are at the minimum 10%, with
+women being far more likely to know no source for condoms.
+
+According to Table 2.4 in the Kenya Population and Housing Census in 2019 
+[@citeKPHC], Nairobi, the capital city of Kenya, has a population density of
+6247 personnel per square kilometer, dwarfing any other county or province in
+Kenya. One hypothesis is that this level of population density and urbanization 
+may be a reason as to why the gap between female and male knowledge on condom 
+sources is relatively smaller in Nairobi. However, Nyanza, a province
+where the population density of its counties range from 393 to 958 personnel
+per square kilometer, has a difference in female and male knowledge
+on condom sources very similar to Nairobi's.
+
+## Knowledge of a source for condoms: Education Level
+
+```{r graph3, fig.cap="Percentage of Surveyee Without Knowledge of A Source for Condom versus Education Level", echo = FALSE, fig.width=8, fig.height=4}
+kenya_condom_education %>%
+  ggplot(aes(x = education, y = dont_know_a_source, color = gender)) +
+  geom_point(size = 4) +
+  theme_minimal() +
+  labs(y = "Don't know a source for condom (%)",
+       x = "Education")
+```
+
+Figure \@ref(fig:graph3) shows a trend that is similar to the previous two;
+a higher percentage of women do not know a source for condoms compared to men.
+A notable outlier is when there is a complete lack of education: 
+Both female and male surveyees without any education have nearly identical 
+level of ignorance regarding ways to obtain condoms.
+
+\newpage
 
 # Results
 
+## Population density and knowledge on condoms
+
+As shown in Figure \@ref(fig:graph2), the difference in ignorance of condom
+sources between women and men vary by a significant amount between provinces.
+The initial hypothesis presented in this paper is that the difference could be
+linked to the population density in each province. However, after reviewing
+the Kenya Population Census [@citeKPHC], no apparent pattern is found. Some
+provinces with relatively massive population density such as Nairobi have a 
+smaller difference in condom source ignorance as hypothesized to be due to its 
+greater urbanization. However, other provinces that contain counties with
+population density comparable to Nairobi, such as the Coast province, have
+a much large difference in condom source ignorance between men and women:
+Mombasa,
+a county in the Coast province, has the second largest population density
+at 5495 personnel per square kilometer, yet the overall gap between
+female and male knowledge on condom sources is still relatively large in
+the Coast province. On the other hand, Nyanza, a province
+where the population density of its counties range from 393 to 958 personnel
+per square kilometer, has a difference in female and male knowledge
+on condom sources very similar to Nairobi's.
+It is unclear as to whether population density plays an
+important role in determining the region's ignorance of sources to obtain
+condoms.
+
+## Age Group and knowledge on condoms
+
+Figure \@ref(fig:graph) shows that lack of knowledge on a source for condoms
+is much higher in the younger age group (age 15 to 19), decreases in older
+age groups, and once ago rises in the oldest age groups (age 40 to 49 and
+age 50 to 54).
+
+In general, the disparity between percentage
+of women and men that do not know a source for condoms remains largely
+unaffected by age groups, though is worth noting however that younger surveyees
+(people in the age of 15 to 19) have a relatively higher difference in this
+regard.
+In total, the percentage of women that do not know of a source 
+for condoms are 15.1% higher than men.
+
+## Education Level and knowledge on condoms
+
+As demonstrated in Figure \@ref(fig:graph3), a staggeringly high percentage
+of women and men with no education have no knowledge on where to obtain
+condoms.
+The graph also shows that receiving a higher level of
+education leads to an overall decrease in condom source ignorance in
+both genders. However, the difference in condom source ignorance between
+women and men seem to not be correlated to education level, as the difference
+in condom source ignorance between genders is lower in both the 'No Education'
+and 'Secondary+' levels compared to the 'Primary Incomplete' and
+'Primary Complete' levels.
+
 # Discussion
 
-## First discussion point
+## Level of Variance in Population Density
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+As discussed in the Results section, we seemingly cannot establish a
+relationship between population density of a province and the difference in
+condom source ignorance between its female and male residents. The reasoning
+is that provinces that contain counties with similar levels of population
+density have very difference disparities in the percentage of women and men that
+know where to obtain condoms. However, it is important to note that each
+province is sectioned into different numbers of counties. A possible connection
+that was not analyzed in this paper is the hypothesis that the aforementioned
+disparities were caused by the level of variance in population density among
+the counties for each province. For example, according to the Kenya Population
+Census [@citeKPHC], Nyanza, a province
+where the population density of its counties range from 393 to 958 personnel
+per square kilometer, has a difference in female and male knowledge
+on condom sources very similar to that of the Nairobi province. On the other
+hand, the Rift Valley province contains counties with population density 
+ranging from 14 to 397 personnel per square kilometer, and the Eastern province
+contains counties with population density ranging from 6 to 236 personnel per
+square kilometer. In these two provinces which have relatively lower variance in
+its counties' population densities, the difference in percentage of women
+and men that know sources for condoms are much larger compared to Nyanza, a
+province with a higher variance in its counties' population densities. There is
+a possibility of correlation in here, and this
+direction could prove to be an interesting add-on or extension of this paper.
 
-## Second discussion point
+## Higher percentage of women with no knowledge of condom sources on average
 
-## Third discussion point
+Across all the tables and graphs presented in this paper, it is apparent that
+on average, a significantly higher percentage of women have no knowledge
+sources for condoms. It is unclear as to why this disparity exists. One possible
+reasoning is that condom is a male-contraceptive and thus less advertised to
+women.
 
-## Weaknesses and next steps
+## Limitations
 
-Weaknesses and next steps should also be included.
+### Unequal sampling size between genders
+
+As discussed in the beginning of the Data section, in the report conducted by
+the DHS Program that is used to extract the raw data for this paper from, there
+are more than twice the number of female surveyees than male surveyees, yet,
+according to Faria [@citeStati],
+the gender ratio in Kenya in 2000 is about 98.6 males per 100 females, meaning
+that there is no significant numerical difference between genders in Kenya.
+Therefore, there is no feasible justification for this difference in sample
+size between genders. This disadvantage could negatively affect the accuracy
+of any tests based on the assumption of equal variances.
+
+### Inexplicable lack of data
+
+As showcased in Figure \@ref(fig:graph), there is a lack of data for women in
+the age group of 50 to 54 and we could not locate an explanation for it in the
+DHS Program report. It could be that there were simply not enough female
+surveyees in the age group of 50 to 54; While it was stated in the DHS Program
+report [@citeDHS] that it used stratified sampling, the report did not specify
+which characteristic the sample was stratified on, leaving no way for us to
+figure out the reasoning behind this discrepancy.
+
+### Omission of certain counties and estimation for certain counties
+
+The survey used by the DHS Program was distributed in nearly all districts in
+Kenya. While the total population of the districts not included in the survey
+only amounts to less than four percent of the country's population, it is still
+a substantial percentage of the national population that was not sampled from.
+
+Additionally, the DHS Program report [@citeDHS] noted that due to a drastic
+increase in number of counties in the country in the few years prior to the
+publication of the report, values for certain variables for some rural counties
+were estimated instead. One of the reasons for doing so, as stated in the DHS
+Program report, was that these districts were included in the previous two
+DHS Program reports of the same nature on Kenya, and thus reliable estimates
+could be achieved. It is unclear as to how much these estimates deviate from
+the true data or how much effect this has on the overall dataset, but it is
+nevertheless a potential source of error that sadly cannot be remedied in the
+scope of this paper alone.
+
 
 \newpage
 

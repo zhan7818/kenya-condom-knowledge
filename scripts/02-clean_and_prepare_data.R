@@ -21,8 +21,8 @@ kenya_condom_clean <- kenya_condom %>%
 
 #### Data cleanup and prepare ####
 # There are multiple variables such as age, residence, province, education, etc.
-# As such, the raw data will be split into two separate datasets that each focus
-# on either age or province, the two main variables.
+# As such, the raw data will be split into three separate datasets that each focus
+# on either age, education or province, the three main variables.
 
 ## Age dataset ##
 # Add a new column that denotes the gender
@@ -48,6 +48,19 @@ kenya_condom_province <- kenya_condom_province[c(15:21,27,43:49,55),] %>%
 # Now we change the class of the variables
 kenya_condom_province <- kenya_condom_province %>%
   mutate(province = as.factor(province)) %>%
+  mutate(gender = as.factor(gender))
+
+## Education dataset ##
+# Add a new column that denotes the gender
+kenya_condom_education <- kenya_condom_clean %>%
+  mutate(gender = ifelse(as.numeric(rownames(kenya_condom_clean))<28,"female","male"))
+kenya_condom_education <- kenya_condom_education[,c(1,12,2:11)]
+# We will filter to only the education rows and rename the var column
+kenya_condom_education <- kenya_condom_education[c(23:27,51:55),] %>%
+  rename(education = var)
+# Now we change the class of the variables
+kenya_condom_education <- kenya_condom_education %>%
+  mutate(education = as.factor(education)) %>%
   mutate(gender = as.factor(gender))
 
 #### Dataset tests ####
@@ -125,6 +138,42 @@ agent2 <-
 
 agent2
 
+## Education dataset tests ##
+agent3 <-
+  create_agent(tbl = kenya_condom_education) %>%
+  col_is_factor(columns = vars(education, gender)) %>%
+  col_is_numeric(columns = vars(know_about_condoms,
+                                public_sector,
+                                private_medical_sector,
+                                private_pharmacy,
+                                shop,
+                                cbd_agent,
+                                friends_and_relatives,
+                                other_sources,
+                                dont_know_a_source,
+                                number_of_people)) %>%
+  col_vals_in_set(columns = education,
+                  set = c("No education","Primary incomplete",
+                          "Primary complete","Secondary+","Total")) %>%
+  col_vals_in_set(columns = gender,
+                  set = c("male", "female")) %>%
+  col_vals_between(columns = vars(know_about_condoms,
+                                  public_sector,
+                                  private_medical_sector,
+                                  private_pharmacy,
+                                  shop,
+                                  cbd_agent,
+                                  friends_and_relatives,
+                                  other_sources,
+                                  dont_know_a_source),
+                   left = 0,
+                   right = 100) %>%
+  col_vals_gte(columns = number_of_people, value = 0) %>%
+  interrogate()
+
+agent3
+
 #### Save data ####
 write_csv(kenya_condom_age, "outputs/data/cleaned_data_age.csv")
 write_csv(kenya_condom_province, "outputs/data/cleaned_data_province.csv")
+write_csv(kenya_condom_education, "outputs/data/cleaned_data_education.csv")
