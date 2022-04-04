@@ -133,10 +133,11 @@ data on only one gender. Therefore a dataset that combines data from both
 genders in order to provide a more accurate analysis. As such,
 a new variable, `gender`, is constructed to help distinguish the data between
 female and male participants. Additionally, there is an issue in that the rows
-of the tables corresponded to different variables; for example, some rows 
+of the tables corresponded to background characteristics; for example, some rows 
 contained data for certain age groups while other rows contained data for 
 different marital statuses. To simplify the analysis process, only the rows 
-pertaining to age groups, education, and provinces were parsed from the PDF.
+pertaining to age groups, education, and provinces were parsed from the PDF
+(Three datasets are constructed as a result instead of a single one).
 
 The dataset is then cleaned using the `janitor` [@citejani] and `dplyr` 
 [@citedplyr] package. The `pointblank` [@citePB] package is used to set 
